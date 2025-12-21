@@ -1,0 +1,51 @@
+```{r}
+library(ggplot2)
+library(ggrepel)
+print(getwd())
+setwd("C:/Users/sakii/Desktop/R実験")
+
+# データ読み込みと総合スコア列の作成
+my_data <- read.csv("data.csv", fileEncoding = "UTF-8")
+my_data$score_avg <- rowMeans(my_data[, c("score_jp", "score_math")])
+print(head(my_data))
+
+# 島根県のデータを抽出
+shimane <- my_data[my_data$pref == "島根県", ]
+other_prefectures <- my_data[my_data$pref != "島根県", ]
+
+# 散布図の作成
+ggplot(my_data, aes(x = income, y = score_avg)) +
+  geom_point(color = "black", size = 2) +
+  geom_point(data = shimane, aes(x = income, y = score_avg), color = "red", size = 5) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text_repel(
+    data = other_prefectures,
+    aes(label = pref),
+    color = "black",
+    size = 3
+  ) +
+  geom_text_repel(
+    data = shimane,
+    aes(label = pref),
+    color = "red",
+    size = 5
+  ) +
+  labs(
+    title = "県民所得と学力スコアの相関",
+    x = "県民所得",
+    y = "総合スコア"
+  ) +
+  theme_minimal()
+ggsave("県民所得と学力スコアの相関.png", width = 10, height = 7, dpi = 300)
+
+# 単回帰分析
+model <- lm(score_avg ~ income, data = my_data)
+summary(model)
+
+# 島根県の残差を計算
+shimane_residuals <- resid(model)[my_data$pref == "島根県"]
+print("島根県の残差:")
+print(shimane_residuals)
+```
+
+
