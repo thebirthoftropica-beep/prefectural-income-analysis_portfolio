@@ -1,6 +1,6 @@
 # 都道府県民所得と全国学力テストの結果の単回帰分析
 
-## 分析レポート（完成版）
+## 分析レポート
 こちらのリンクからブラウザでレポートを閲覧できます
 
 https://thebirthoftropica-beep.github.io/prefectural-income-analysis_portfolio/
@@ -34,4 +34,4 @@ https://thebirthoftropica-beep.github.io/prefectural-income-analysis_portfolio/
 - index.html: Quartoから出力された分析レポート本体
 - shimane_analysis.qmd: Rコードと文章を含むQuartoソースファイル
 - data.csv: 政府統計から作成した分析用データセット
-- *.png: ggplot2で描画した回帰分析グラフ
+- graph: ggplot2で描画した回帰分析グラフ
