@@ -19,7 +19,8 @@ https://thebirthoftropica-beep.github.io/prefectural-income-analysis_portfolio/
 <br>
 
 ## 使用技術
-- 言語: R主要パッケージ: ggplot2, ggrepel
+- 言語: R
+- 主要パッケージ: ggplot2, ggrepel
 - レポート作成: Quarto (HTMLレンダリング)
 - データクレンジング: 政府統計（e-Stat等）の「神エクセル」をRで処理可能なCSV形式に整形
 <br>
