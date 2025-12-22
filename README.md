@@ -2,7 +2,7 @@
 
 ## 分析レポート（完成版）
 こちらのリンクからブラウザでレポートを閲覧できます
-https://thebirthoftropica-beep.github.io/prefectural-income-analysis/
+https://thebirthoftropica-beep.github.io/prefectural-income-analysis_portfolio/
 
 ## プロジェクト概要
 本プロジェクトは、現代日本における「学力格差」の構造を、都道府県民所得と**全国学力・学習状況調査（全国学力テスト）**のデータを用いて実証的に分析したデータジャーナリズムの実践例です。単なる相関の提示に留まらず、特定地域（島根県など）の残差分析を通じて、数値の裏側に潜む社会的・構造的な要因を考察しています。
