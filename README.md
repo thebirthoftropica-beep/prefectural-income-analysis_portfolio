@@ -35,4 +35,4 @@ https://thebirthoftropica-beep.github.io/prefectural-income-analysis_portfolio/
 - index.html: Quartoから出力された分析レポート本体
 - shimane_analysis.qmd: Rコードと文章を含むQuartoソースファイル
 - data.csv: 政府統計から作成した分析用データセット
-- graph: ggplot2で描画した回帰分析グラフ
+- graph.png: ggplot2で描画した回帰分析グラフ
