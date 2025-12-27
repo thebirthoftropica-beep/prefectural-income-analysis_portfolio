@@ -1,8 +1,39 @@
+# 都道府県民所得と全国学力テストの結果の単回帰分析
+<br>
+<br>
+
+## １．問題の所在
+　小中学生の学力の低下が指摘される昨今、2007年より開始された**全国学力・学習状況調査（全国学力テスト）**は、各自治体の学力を測定・比較するための一つの指標として定着している。
+
+　島根県のように全国学力テストの成績が下位[1]の自治体では、県主導で学力向上のための教育的施策を展開しているが、「授業づくりの拡充」[2]といった、現場主義的な対処療法が主であり、**経済的格差といった社会構造的な視点**がなおざりにされる傾向がある。
+
+
+　本稿では**経済的状況が子どもの学力に与える影響**の一例を明らかにするため、都道府県民所得と全国学力テストの関連性について、単回帰分析を用いた検証を行う。
+
+<br>
+
+## ２．データソース
+　本稿で用いたデータソースは以下の2つである。  
+
+        ①「令和６年度　全国学力・学習状況調査　報告書・調査結果資料」　
+        出典：国立教育政策研究所（https://www.nier.go.jp/kaihatsu/zenkokugakuryoku.html）
+        
+        ②「県民経済計算（平成23年度 - 令和４年度）（2008SNA、平成27年基準計数）＜47都道府県、６政令指定都市分＞」から令和4年度版「1人当たり県民所得」
+        出典：内閣府（https://www.esri.cao.go.jp/jp/sna/data/data_list/kenmin/files/contents/main_2022.html）
+
+
+　これらのソースを、統計ソフトRが読み込むことができるように.CSV形式にクレンジングし、データセットとして用いた。
+
+　また本稿では、単回帰分析の目的変数(Target Variable)を「①全国学力テストの結果」とし、説明変数(Explanatory Variable)を「②県民所得」とした。
+
+<br>
+
+## ３．分析
 ```{r}
+
 library(ggplot2)
 library(ggrepel)
 print(getwd())
-setwd("C:/Users/sakii/Desktop/R実験")
 
 # データ読み込みと総合スコア列の作成
 my_data <- read.csv("data.csv", fileEncoding = "UTF-8")
@@ -14,7 +45,7 @@ shimane <- my_data[my_data$pref == "島根県", ]
 other_prefectures <- my_data[my_data$pref != "島根県", ]
 
 # 散布図の作成
-ggplot(my_data, aes(x = income, y = score_avg)) +
+p <- ggplot(my_data, aes(x = income, y = score_avg)) +
   geom_point(color = "black", size = 2) +
   geom_point(data = shimane, aes(x = income, y = score_avg), color = "red", size = 5) +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
@@ -22,13 +53,15 @@ ggplot(my_data, aes(x = income, y = score_avg)) +
     data = other_prefectures,
     aes(label = pref),
     color = "black",
-    size = 3
+    size = 3,
+    max.overlaps = Inf  
   ) +
   geom_text_repel(
     data = shimane,
     aes(label = pref),
     color = "red",
-    size = 5
+    size = 5,
+    max.overlaps = Inf  
   ) +
   labs(
     title = "県民所得と学力スコアの相関",
@@ -36,7 +69,8 @@ ggplot(my_data, aes(x = income, y = score_avg)) +
     y = "総合スコア"
   ) +
   theme_minimal()
-ggsave("県民所得と学力スコアの相関.png", width = 10, height = 7, dpi = 300)
+print(p)
+ggsave("graph.png", plot = p, width = 10, height = 7, dpi = 300)
 
 # 単回帰分析
 model <- lm(score_avg ~ income, data = my_data)
@@ -47,5 +81,45 @@ shimane_residuals <- resid(model)[my_data$pref == "島根県"]
 print("島根県の残差:")
 print(shimane_residuals)
 ```
+
+<br>
+
+## ４．結果
+単回帰分析の結果、
+
+> 回帰係数=3.347*10^-4 (0.0003347)
+
+> P値 =7.76 * 10^-5
+
+となった。
+ したがって**P値が有意水準 1% を十分に下回っていることから、都道府県民所得は学力テストの総合スコアに対して統計的に有意な正の関連を持つことが示された。これは、所得水準が高い地域ほど学力スコアも高くなる傾向があることを示唆している。**
+
+他方で、
+
+> 決定係数（R^2）=0.2959
+
+　であり、これは**都道府県ごとの学力スコアの差のうち、約30%は「県民所得の差」によって説明がつくが、残りの約70%は所得以外の要因によることを示している。**換言すれば、所得の多寡が、学力を決定づけるすべての要因ではない、ということである。
+
+また、
+
+> 島根県の残差= -0.2891756
+
+　だった。これは、本モデルによる予測値から負の方向に乖離している。従って、同県の学力スコアが、県民所得という変数だけでは十分に説明しきれない要因によって、期待値よりも低く抑えられている可能性を示唆している。
+
+<br>
+
+## ５．考察
+　　「問題の所在」で指摘した通り、学力格差の是正は現場主義的な方策のみでは対応困難な構造的な問題であると言える。本稿で示した「都道府県民所得は学力テストの総合スコアに対して統計的に有意な正の関連を持つ」という調査結果は、「学力と経済力」という構造的な問題の一端であるといえる。
+
+　また決定係数は約30％程度であり、これは地方と都市部における「塾の数」「親の学歴」「文化的施設」といった別の変数も、子どもの学力に強く関連している可能性を示唆している。
+
+<br>
+<br>
+
+
+[1]本稿のデータセットにも用いた令和6年学力テストでは、全国47都道府県のうち、島根県は小学校国語が23位（正答率67％）、小学校算数39位（同61％）、中学校国語25位（同57％）、中学校数学41位（同57％）となっている。なお正答率が同じ場合、同率順位として計上される。
+
+
+[2]https://www.pref.shimane.lg.jp/education/kyoiku/ikusei/ikusei/gakuryoku_plan.html
 
 
