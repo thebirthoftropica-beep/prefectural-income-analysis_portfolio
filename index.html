@@ -85,27 +85,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="都道府県民所得と全国学力テストの結果の単回帰分析" class="level1">
 <h1>都道府県民所得と全国学力テストの結果の単回帰分析</h1>
+<p><br> <br></p>
 <section id="問題の所在" class="level2">
 <h2 class="anchored" data-anchor-id="問題の所在">１．問題の所在</h2>
-<p>小中学生の学力の低下が指摘される昨今、2007年より開始された<strong>全国学力・学習状況調査（全国学力テスト）</strong>は、各自治体の学力を測定・比較するための一つの指標として定着している。 　島根県のように全国学力テストの成績が下位[1]の自治体では、県主導で学力向上のための教育的施策を展開しているが、「授業づくりの拡充」[2]といった、現場主義的な対処療法が主であり、<strong>経済的格差といった社会構造的な視点</strong>がなおざりにされる傾向がある。 　本稿では<strong>経済的状況が子どもの学力に与える影響</strong>の一例を明らかにするため、都道府県民所得と全国学力テストの関連性について、単回帰分析を用いた検証を行う。</p>
+<p>　小中学生の学力の低下が指摘される昨今、2007年より開始された<strong>全国学力・学習状況調査（全国学力テスト）</strong>は、各自治体の学力を測定・比較するための一つの指標として定着している。</p>
+<p>　島根県のように全国学力テストの成績が下位[1]の自治体では、県主導で学力向上のための教育的施策を展開しているが、「授業づくりの拡充」[2]といった、現場主義的な対処療法が主であり、<strong>経済的格差といった社会構造的な視点</strong>がなおざりにされる傾向がある。</p>
+<p>　本稿では<strong>経済的状況が子どもの学力に与える影響</strong>の一例を明らかにするため、都道府県民所得と全国学力テストの関連性について、単回帰分析を用いた検証を行う。</p>
+<p><br></p>
 </section>
 <section id="データソース" class="level2">
 <h2 class="anchored" data-anchor-id="データソース">２．データソース</h2>
-<p>本稿で用いたデータソースは以下の2つである。 ①「令和６年度　全国学力・学習状況調査　報告書・調査結果資料」　 出典：国立教育政策研究所（https://www.nier.go.jp/kaihatsu/zenkokugakuryoku.html） ②「県民経済計算（平成23年度 - 令和４年度）（2008SNA、平成27年基準計数）＜47都道府県、６政令指定都市分＞」から令和4年度版「1人当たり県民所得」 出典：内閣府（https://www.esri.cao.go.jp/jp/sna/data/data_list/kenmin/files/contents/main_2022.html） 　これらのソースを、統計ソフトRが読み込むことができるように.CSV形式にクレンジングし、データセットとして用いた。 　また本稿では、単回帰分析の目的変数(Target Variable)を「①全国学力テストの結果」とし、説明変数(Explanatory Variable)を「②県民所得」とした。</p>
+<p>　本稿で用いたデータソースは以下の2つである。</p>
+<pre><code>    ①「令和６年度　全国学力・学習状況調査　報告書・調査結果資料」　
+    出典：国立教育政策研究所（https://www.nier.go.jp/kaihatsu/zenkokugakuryoku.html）
+    
+    ②「県民経済計算（平成23年度 - 令和４年度）（2008SNA、平成27年基準計数）＜47都道府県、６政令指定都市分＞」から令和4年度版「1人当たり県民所得」
+    出典：内閣府（https://www.esri.cao.go.jp/jp/sna/data/data_list/kenmin/files/contents/main_2022.html）</code></pre>
+<p>　これらのソースを、統計ソフトRが読み込むことができるように.CSV形式にクレンジングし、データセットとして用いた。</p>
+<p>　また本稿では、単回帰分析の目的変数(Target Variable)を「①全国学力テストの結果」とし、説明変数(Explanatory Variable)を「②県民所得」とした。</p>
+<p><br></p>
 </section>
 <section id="分析" class="level2">
 <h2 class="anchored" data-anchor-id="分析">３．分析</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">getwd</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">getwd</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "C:/Users/sakii/Desktop/R_experimen/R_experimen"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データ読み込みと総合スコア列の作成</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data.csv"</span>, <span class="at">fileEncoding =</span> <span class="st">"UTF-8"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>my_data<span class="sc">$</span>score_avg <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(my_data[, <span class="fu">c</span>(<span class="st">"score_jp"</span>, <span class="st">"score_math"</span>)])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(my_data))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データ読み込みと総合スコア列の作成</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data.csv"</span>, <span class="at">fileEncoding =</span> <span class="st">"UTF-8"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>my_data<span class="sc">$</span>score_avg <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(my_data[, <span class="fu">c</span>(<span class="st">"score_jp"</span>, <span class="st">"score_math"</span>)])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(my_data))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    pref income score_jp score_math score_avg
 1 北海道   2891      8.6        8.2      8.40
@@ -115,36 +127,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 5 秋田県   2769      9.0        8.4      8.70
 6 山形県   2994      8.6        8.2      8.40</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 島根県のデータを抽出</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>shimane <span class="ot">&lt;-</span> my_data[my_data<span class="sc">$</span>pref <span class="sc">==</span> <span class="st">"島根県"</span>, ]</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>other_prefectures <span class="ot">&lt;-</span> my_data[my_data<span class="sc">$</span>pref <span class="sc">!=</span> <span class="st">"島根県"</span>, ]</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 散布図の作成</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(my_data, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> score_avg)) <span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> shimane, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> score_avg), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> other_prefectures,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> pref),</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="cn">Inf</span>  </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> shimane,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> pref),</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">5</span>,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="cn">Inf</span>  </span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"県民所得と学力スコアの相関"</span>,</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"県民所得"</span>,</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"総合スコア"</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 島根県のデータを抽出</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>shimane <span class="ot">&lt;-</span> my_data[my_data<span class="sc">$</span>pref <span class="sc">==</span> <span class="st">"島根県"</span>, ]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>other_prefectures <span class="ot">&lt;-</span> my_data[my_data<span class="sc">$</span>pref <span class="sc">!=</span> <span class="st">"島根県"</span>, ]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 散布図の作成</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(my_data, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> score_avg)) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> shimane, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> score_avg), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> other_prefectures,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> pref),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="cn">Inf</span>  </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> shimane,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> pref),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">5</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="cn">Inf</span>  </span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"県民所得と学力スコアの相関"</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"県民所得"</span>,</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"総合スコア"</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -155,13 +167,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"県民所得と学力スコアの相関.png"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"graph.png"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 単回帰分析</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(score_avg <span class="sc">~</span> income, <span class="at">data =</span> my_data)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 単回帰分析</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(score_avg <span class="sc">~</span> income, <span class="at">data =</span> my_data)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -182,18 +194,19 @@ Residual standard error: 0.2827 on 45 degrees of freedom
 Multiple R-squared:  0.2959,    Adjusted R-squared:  0.2802 
 F-statistic: 18.91 on 1 and 45 DF,  p-value: 7.761e-05</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 島根県の残差を計算</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>shimane_residuals <span class="ot">&lt;-</span> <span class="fu">resid</span>(model)[my_data<span class="sc">$</span>pref <span class="sc">==</span> <span class="st">"島根県"</span>]</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"島根県の残差:"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 島根県の残差を計算</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>shimane_residuals <span class="ot">&lt;-</span> <span class="fu">resid</span>(model)[my_data<span class="sc">$</span>pref <span class="sc">==</span> <span class="st">"島根県"</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"島根県の残差:"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "島根県の残差:"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(shimane_residuals)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(shimane_residuals)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        32 
 -0.2891756 </code></pre>
 </div>
 </div>
+<p><br></p>
 </section>
 <section id="結果" class="level2">
 <h2 class="anchored" data-anchor-id="結果">４．結果</h2>
@@ -215,11 +228,15 @@ F-statistic: 18.91 on 1 and 45 DF,  p-value: 7.761e-05</code></pre>
 <p>島根県の残差= -0.2891756</p>
 </blockquote>
 <p>　だった。これは、本モデルによる予測値から負の方向に乖離している。従って、同県の学力スコアが、県民所得という変数だけでは十分に説明しきれない要因によって、期待値よりも低く抑えられている可能性を示唆している。</p>
+<p><br></p>
 </section>
 <section id="考察" class="level2">
 <h2 class="anchored" data-anchor-id="考察">５．考察</h2>
-<p>「問題の所在」で指摘した通り、学力格差の是正は現場主義的な方策のみでは対応困難な構造的な問題であると言える。本稿で示した「都道府県民所得は学力テストの総合スコアに対して統計的に有意な正の関連を持つ」という調査結果は、「学力と経済力」という構造的な問題の一端であるといえる。 　また決定係数は約30％程度であり、これは地方と都市部における「塾の数」「親の学歴」「文化的施設」といった別の変数も、子どもの学力に強く関連している可能性を示唆している。</p>
-<p>[1]本稿のデータセットにも用いた令和6年学力テストでは、全国47都道府県のうち、島根県は小学校国語が23位（正答率67％）、小学校算数39位（同61％）、中学校国語25位（同57％）、中学校数学41位（同57％）となっている。なお正答率が同じ場合、同率順位として計上される。 [2]https://www.pref.shimane.lg.jp/education/kyoiku/ikusei/ikusei/gakuryoku_plan.html</p>
+<p>　　「問題の所在」で指摘した通り、学力格差の是正は現場主義的な方策のみでは対応困難な構造的な問題であると言える。本稿で示した「都道府県民所得は学力テストの総合スコアに対して統計的に有意な正の関連を持つ」という調査結果は、「学力と経済力」という構造的な問題の一端であるといえる。</p>
+<p>　また決定係数は約30％程度であり、これは地方と都市部における「塾の数」「親の学歴」「文化的施設」といった別の変数も、子どもの学力に強く関連している可能性を示唆している。</p>
+<p><br> <br></p>
+<p>[1]本稿のデータセットにも用いた令和6年学力テストでは、全国47都道府県のうち、島根県は小学校国語が23位（正答率67％）、小学校算数39位（同61％）、中学校国語25位（同57％）、中学校数学41位（同57％）となっている。なお正答率が同じ場合、同率順位として計上される。</p>
+<p>[2]https://www.pref.shimane.lg.jp/education/kyoiku/ikusei/ikusei/gakuryoku_plan.html</p>
 </section>
 </section>
 
